@@ -3,27 +3,29 @@ use strict;
 use Carp;
 use FileHandle;
 use Fcntl qw(:flock);
-use vars qw /$VERSION/;
+use vars qw /$VERSION $SEM/;
 
-$VERSION='1.03';
+$VERSION='1.04';
+$SEM = ".LS.lock";
 
 sub new{
   my($class,%args)=@_;
   my $self =  bless{LOG        => $args{LOG} || croak"No logfile!\n",
                     CARP       => $args{CARP} || undef,
-                    FILEHANDLE => new FileHandle,
+                    FILEHANDLE => new FileHandle || croak"Unable to get filehandle\n",
+		    SEMAPHORE  => new FileHandle || croak"Unable to create semaphore filehandle\n",
                     ERROR      => "",
                     HISTORY    => [],
               },$class;
 
-  if(! $self->open()){
-    $self->set("Could not open logfile $$self{LOG} for writing");
+  if(! $self->open_log()){
+    die"Unable to open $self->{LOG}\n";
   }
 
   return $self;
 }
 
-sub open{
+sub open_log{
   my $self=shift;
   if(! open($$self{FILEHANDLE},">>$$self{LOG}")){
     $self->set("Unable to open logfile\n");
@@ -36,7 +38,6 @@ sub open{
 sub write{
   my($self,$msg)=@_;
   my $FH=*{$$self{FILEHANDLE}};
-
   my $format="$0 : [".scalar (localtime)."] $msg";
   $self->lock();
   if(! print $FH "$format\n"){
@@ -80,13 +81,24 @@ sub print_object{
 
 sub lock{
   my $self=shift;
-  my $FH=*{$$self{FILEHANDLE}};
-  flock($FH,LOCK_EX);
+  $self->wait;
+  open $$self{SEMAPHORE},">$SEM"||die"Can't create lock file: $!\n";
+  flock($$self{SEMAPHORE},LOCK_EX) or die"Can't obtain file lock: $!\n";
 }
+
 sub unlock{
   my $self=shift;
-  my $FH=*{$$self{FILEHANDLE}};
-  flock($FH,LOCK_UN);
+  if(-e $SEM){
+    flock($$self{SEMAPHORE},LOCK_UN);
+    $$self{SEMAPHORE}->autoflush(1);
+    unlink $SEM;
+  }
+}
+
+sub wait{
+  while(-e $SEM){
+   sleep 1;
+  }
 }
 1;
 __END__
@@ -117,7 +129,7 @@ Logger::Simple - Implementation of the Simran-Log-Log and Simran-Error-Error mod
   # Get the last set error message
   my $message=$log->message;
   print "Message: $message\n";
-  
+
 =head1 DESCRIPTION
 
 =over 5
@@ -190,7 +202,17 @@ direct any questions concerning this module there as well.
 
 =head1 COPYRIGHT
 
+=begin text
+
 Copyright (C) 2002-2003 Thomas Stanley. All rights reserved. This program is free software; you can distribute it and/or modify it under the same terms as Perl itself.
+
+=end text
+
+=begin html
+
+Copyright E<copy> 2002-2003 Thomas Stanley. All rights reserved. This program is free software; you can distribute it and/or modify it under the same terms as Perl itself.
+
+=end html
 
 =head1 SEE ALSO
 

@@ -28,3 +28,14 @@ Revision history for Perl extension Logger::Simple
 		- Added the lock and unlock functions, which are called by
 		  the write() function
 
+1.04  Tue Mar 11 11:19:35 2003
+	- Re-implemented the file locking on the log file
+		- Added an internal variable for a semaphore flag file
+		- Added the wait function, which will sleep for 1 second
+		  if the semaphore file is present
+	- Added to the pod
+		- Corrected a problem within the formatting, so that it
+		  will now format properly
+			- Added a special HTML copyright section to
+			  display the copyright symbol
+  

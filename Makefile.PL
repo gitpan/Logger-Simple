@@ -9,5 +9,6 @@ WriteMakefile(
                             Data::Dumper => 0,
 			    Fcntl => 0,
 			    Time::HiRes => 0,
+			    Test::More => 0,
                             }, # e.g., Module::Name => 1.1
 );

@@ -43,3 +43,6 @@ Revision history for Perl extension Logger::Simple
 	- Included the Time::HiRes module to provide for a more
 	  granular sleep in the wait function
 
+1.06  Wed Oct 29 12:30:53 2003
+	- Re-implemented the tests using the Test::More module
+

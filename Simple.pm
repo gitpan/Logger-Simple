@@ -4,7 +4,7 @@ use Carp;
 use FileHandle;
 use vars qw /$VERSION/;
 
-$VERSION='1.0';
+$VERSION='1.01';
 
 sub new{
   my($class,%args)=@_;
@@ -108,6 +108,50 @@ Logger::Simple - Implementation of the Simran-Log-Log and Simran-Error-Error mod
   
 =head1 DESCRIPTION
 
+=over 5
+
+=item new
+
+C<< new(LOG=>"/tmp/logfile",CARP=>'1'); >>
+
+This creates the Logger::Simple object, and initializes it with two parameters.
+The LOG parameter is the name of the file to which the object will write the
+log. The CARP parameter will provide more error reporting within the object.
+Upon creation of the object, it will also make a call to the open method, 
+which opens the file using the FileHandle object that is stored within the
+FILEHANDLE parameter.
+
+=item set
+
+C<< set("This is an error message"); >>
+
+This method takes an argument of a string and saves it within two parameters of
+the object. It saves it in the ERROR parameter, which is the last error message
+that is set, and it saves it to the HISTORY parameter, which is an array that
+contains all set error messages.
+
+=item write
+
+C<< write("This is a log message"); >>
+
+This method takes an argument of a string and writes it to the open logfile
+that was opened upon creation of the Logger::Simple object.
+
+=item message
+
+C<< @array = $object->message; >>
+
+          or
+
+C<< $msg = $object->message; >>
+
+When this method is called in a list context, it will return the HISTORY
+parameter within the object, which is an anonymous array. When called in a
+scalar context, it returns the last error message that was set, which is in
+the ERROR parameter of the object.
+
+=back
+
 =head1 EXPORT
 
 None by default.
@@ -124,7 +168,12 @@ were invaluable references for me.
 
 =head1 AUTHOR
 
-Thomas Stanley <Thomas_J_Stanley@msn.com>
+Thomas Stanley
+
+Thomas_J_Stanley@msn.com
+
+I can also be found on http://www.perlmonks.org as TStanley. You can also
+direct any questions concerning this module there as well.
 
 =head1 COPYRIGHT
 

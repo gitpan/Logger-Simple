@@ -1,0 +1,15 @@
+Revision history for Perl extension Logger::Simple
+
+1.00  Tue Nov 19 15:48:15 2002
+	- original version; created by h2xs 1.20 with options
+		-AXn Logger::Simple
+
+	- combined functions of Simran::Log::Log and Simran::Error::Error
+	  into one module.
+
+	- Redesigned POD to reflect changes
+
+	- Implemented object as a blessed hash
+
+	- Added tests
+

@@ -39,3 +39,7 @@ Revision history for Perl extension Logger::Simple
 			- Added a special HTML copyright section to
 			  display the copyright symbol
   
+1.05  Tue Mar 11 14:46:02 2003
+	- Included the Time::HiRes module to provide for a more
+	  granular sleep in the wait function
+

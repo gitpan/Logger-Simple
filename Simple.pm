@@ -3,9 +3,11 @@ use strict;
 use Carp;
 use FileHandle;
 use Fcntl qw(:flock);
-use vars qw /$VERSION $SEM/;
+use Time::HiRes qw/usleep/;
+use vars qw /$VERSION $SEM $ms/;
 
-$VERSION='1.04';
+$ms=750_000;
+$VERSION='1.05';
 $SEM = ".LS.lock";
 
 sub new{
@@ -97,7 +99,7 @@ sub unlock{
 
 sub wait{
   while(-e $SEM){
-   sleep 1;
+   usleep $ms;
   }
 }
 1;

@@ -8,5 +8,6 @@ WriteMakefile(
                             FileHandle => 0,
                             Data::Dumper => 0,
 			    Fcntl => 0,
+			    Time::HiRes => 0,
                             }, # e.g., Module::Name => 1.1
 );

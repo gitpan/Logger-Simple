@@ -7,5 +7,6 @@ WriteMakefile(
     'PREREQ_PM'		=> {Carp => 0,
                             FileHandle => 0,
                             Data::Dumper => 0,
+			    Fcntl => 0,
                             }, # e.g., Module::Name => 1.1
 );

@@ -2,9 +2,10 @@ package Logger::Simple;
 use strict;
 use Carp;
 use FileHandle;
+use Fcntl qw(:flock);
 use vars qw /$VERSION/;
 
-$VERSION='1.02';
+$VERSION='1.03';
 
 sub new{
   my($class,%args)=@_;
@@ -37,10 +38,11 @@ sub write{
   my $FH=*{$$self{FILEHANDLE}};
 
   my $format="$0 : [".scalar (localtime)."] $msg";
-
+  $self->lock();
   if(! print $FH "$format\n"){
     $self->set("Unable to write to $$self{LOG}: $!\n");
   }
+  $self->unlock();
 }
 
 sub message{
@@ -76,6 +78,16 @@ sub print_object{
   print Data::Dumper->Dumper($self);  
 }
 
+sub lock{
+  my $self=shift;
+  my $FH=*{$$self{FILEHANDLE}};
+  flock($FH,LOCK_EX);
+}
+sub unlock{
+  my $self=shift;
+  my $FH=*{$$self{FILEHANDLE}};
+  flock($FH,LOCK_UN);
+}
 1;
 __END__
 
@@ -178,9 +190,7 @@ direct any questions concerning this module there as well.
 
 =head1 COPYRIGHT
 
-Copyright (C) 2002 Thomas Stanley. All rights reserved. This program is free
-software; you can distribute it and/or modify it under the same terms as
-Perl itself.
+Copyright (C) 2002-2003 Thomas Stanley. All rights reserved. This program is free software; you can distribute it and/or modify it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 

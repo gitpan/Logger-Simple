@@ -22,3 +22,9 @@ Revision history for Perl extension Logger::Simple
 
 	- Made changes in POD to reflect the change in the set method
  
+1.03  Tue Feb  4 14:57:26 2003
+	- Implemented file locking on the logfile using the Fcntl
+	  module
+		- Added the lock and unlock functions, which are called by
+		  the write() function
+

@@ -2,5 +2,8 @@ Changes
 Simple.pm
 MANIFEST
 Makefile.PL
-test.pl
+t/01load.t
+t/02readwrite.t
+t/03lock.t
+t/04pod.t
 README

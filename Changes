@@ -53,3 +53,7 @@ Revision history for Perl extension Logger::Simple
 	- Edited the lock,unlock, and write functions to work with MS-Win32.
 	  This was a reported bug from CPAN Testers
 
+1.081 Mon Jan 10 09:43:13 2005
+	- Reaccomplished the tests using Test::Harness and added a test for
+	  the POD using Test::Pod
+

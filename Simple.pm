@@ -7,7 +7,7 @@ use Time::HiRes qw/usleep/;
 use vars qw /$VERSION $SEM $ms/;
 
 $ms=750_000;
-$VERSION='1.08';
+$VERSION='1.081';
 $SEM = ".LS.lock";
 
 sub new{

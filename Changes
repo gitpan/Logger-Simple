@@ -16,3 +16,9 @@ Revision history for Perl extension Logger::Simple
 1.01  Wed Nov 20 13:44:39 2002
 	- Completed the POD Documentation
 
+1.02  Tue Dec 17 11:40:11 2002
+	- Changed the set method, so that upon setting an error message,
+	  it would also write it to the log file
+
+	- Made changes in POD to reflect the change in the set method
+ 

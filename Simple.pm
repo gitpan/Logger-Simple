@@ -4,7 +4,7 @@ use Carp;
 use FileHandle;
 use vars qw /$VERSION/;
 
-$VERSION='1.01';
+$VERSION='1.02';
 
 sub new{
   my($class,%args)=@_;
@@ -67,6 +67,7 @@ sub set{
 
   push @{$$self{HISTORY}},$error;
   carp "$error\n" if $$self{CARP};
+  $self->write($error);
 }
 
 sub print_object{
@@ -85,16 +86,15 @@ Logger::Simple - Implementation of the Simran-Log-Log and Simran-Error-Error mod
 =head1 SYNOPSIS
 
   use Logger::Simple;
-  my $log=Logger::Simple->new({LOG=>"/tmp/program.log",CARP=>'1'});
+  my $log=Logger::Simple->new(LOG=>"/tmp/program.log",CARP=>'1');
   my $x=5;my $y=4;
   if($x>$y){
     # Set an error message
     $log->set("\$x is greater than \$y");
-
-    # Write a message to the log file 
-    $log->write("\$x is greater than \$y");
   }
-  $log->set("Another error message");
+  $log->set("Another Error message");
+
+  $log->write("Information Message");
 
   # Get entire Error Message History
   my @msgs = $log->message;
@@ -128,7 +128,8 @@ C<< set("This is an error message"); >>
 This method takes an argument of a string and saves it within two parameters of
 the object. It saves it in the ERROR parameter, which is the last error message
 that is set, and it saves it to the HISTORY parameter, which is an array that
-contains all set error messages.
+contains all set error messages. This method also calls the write method, which
+will write the error to the log. 
 
 =item write
 
@@ -184,5 +185,9 @@ Perl itself.
 =head1 SEE ALSO
 
 perl(1).
+
+Simran::Log::Log
+
+Simran::Error::Error
 
 =cut

@@ -46,3 +46,6 @@ Revision history for Perl extension Logger::Simple
 1.06  Wed Oct 29 12:30:53 2003
 	- Re-implemented the tests using the Test::More module
 
+1.07  Fri Mar  5 08:29:12 2004
+	- Added new method to get the name of the logfile
+

@@ -7,7 +7,7 @@ use Time::HiRes qw/usleep/;
 use vars qw /$VERSION $SEM $ms/;
 
 $ms=750_000;
-$VERSION='1.06';
+$VERSION='1.07';
 $SEM = ".LS.lock";
 
 sub new{
@@ -25,6 +25,11 @@ sub new{
   }
 
   return $self;
+}
+
+sub get_log{
+  my $self=shift;
+  return $$self{LOG};
 }
 
 sub open_log{
@@ -132,6 +137,9 @@ Logger::Simple - Implementation of the Simran-Log-Log and Simran-Error-Error mod
   my $message=$log->message;
   print "Message: $message\n";
 
+  # Get the name of the error log
+  my $log_name=$log->get_log;
+
 =head1 DESCRIPTION
 
 =over 5
@@ -176,6 +184,14 @@ When this method is called in a list context, it will return the HISTORY
 parameter within the object, which is an anonymous array. When called in a
 scalar context, it returns the last error message that was set, which is in
 the ERROR parameter of the object.
+
+=item get_log
+
+C<< $log_name = $object->get_log; >>
+
+When this method is called, it will return the LOG parameter within the
+object, which is the name of the logfile that was passed at the creation
+of the object.
 
 =back
 

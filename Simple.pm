@@ -7,7 +7,7 @@ use Time::HiRes qw/usleep/;
 use vars qw /$VERSION $SEM $ms/;
 
 $ms=750_000;
-$VERSION='1.07';
+$VERSION='1.08';
 $SEM = ".LS.lock";
 
 sub new{
@@ -46,13 +46,17 @@ sub write{
   my($self,$msg)=@_;
   my $FH=*{$$self{FILEHANDLE}};
   my $format="$0 : [".scalar (localtime)."] $msg";
-  $self->lock();
+  ## Fix to ignore locking on Win32
+  if($^O eq "MSWin32"){}else{
+    $self->lock();
+  }
   if(! print $FH "$format\n"){
     $self->set("Unable to write to $$self{LOG}: $!\n");
   }
-  $self->unlock();
+  if($^O eq "MSWin32"){}else{ 
+    $self->unlock();
+  }
 }
-
 sub message{
   my $self=shift;
 
@@ -88,7 +92,7 @@ sub print_object{
 
 sub lock{
   my $self=shift;
-  $self->wait;
+  
   open $$self{SEMAPHORE},">$SEM"||die"Can't create lock file: $!\n";
   flock($$self{SEMAPHORE},LOCK_EX) or die"Can't obtain file lock: $!\n";
 }
@@ -97,8 +101,11 @@ sub unlock{
   my $self=shift;
   if(-e $SEM){
     flock($$self{SEMAPHORE},LOCK_UN);
+    close $$self{SEMAPHORE};
     $$self{SEMAPHORE}->autoflush(1);
-    unlink $SEM;
+    if($^O eq "MSWin32"){ system "del $SEM"; }else{
+      unlink $SEM;
+    }
   }
 }
 

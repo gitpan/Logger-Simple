@@ -49,3 +49,7 @@ Revision history for Perl extension Logger::Simple
 1.07  Fri Mar  5 08:29:12 2004
 	- Added new method to get the name of the logfile
 
+1.08  Fri Dec 10 10:40:02 2004
+	- Edited the lock,unlock, and write functions to work with MS-Win32.
+	  This was a reported bug from CPAN Testers
+

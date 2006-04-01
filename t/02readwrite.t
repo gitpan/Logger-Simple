@@ -17,5 +17,12 @@ $log->clear;
 my $m2=$log->message;
 ok(!defined $m2,'Clear error message');
 
-unlink $logfile;
+undef $log;
+
+if($^O eq 'MSWin32'){
+  system "C:\\Windows\\System32\\cmd.exe \/c del t\\logfile2";
+}else{ 
+  unlink $logfile;
+}
+
 

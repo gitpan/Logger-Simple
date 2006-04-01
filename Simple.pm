@@ -7,7 +7,7 @@ use Time::HiRes qw/usleep/;
 use vars qw /$VERSION $SEM $ms/;
 
 $ms=750_000;
-$VERSION='1.081';
+$VERSION='1.09';
 $SEM = ".LS.lock";
 
 sub new{
@@ -91,8 +91,9 @@ sub print_object{
 }
 
 sub lock{
-  my $self=shift;
   
+  my $self=shift;
+  if($^O eq "MSWin32"){ return 1; }
   open $$self{SEMAPHORE},">$SEM"||die"Can't create lock file: $!\n";
   flock($$self{SEMAPHORE},LOCK_EX) or die"Can't obtain file lock: $!\n";
 }
@@ -103,7 +104,9 @@ sub unlock{
     flock($$self{SEMAPHORE},LOCK_UN);
     close $$self{SEMAPHORE};
     $$self{SEMAPHORE}->autoflush(1);
-    if($^O eq "MSWin32"){ system "del $SEM"; }else{
+    if($^O eq "MSWin32"){ 
+      return 1;
+    }else{
       unlink $SEM;
     }
   }

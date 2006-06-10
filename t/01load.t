@@ -1,19 +1,15 @@
-use Test::More tests => 3;
+# Before `make install' is performed this script should be runnable with
+# `make test'. After `make install' it should work as `perl Logger2-Simple.t'
 
-BEGIN{ use_ok('Logger::Simple','use Logger::Simple;'); }
+#########################
 
-my $logfile="t/logfile";
-my $log=Logger::Simple->new(LOG=>$logfile);
-ok($log->isa('Logger::Simple'),'Correct object created');
+# change 'tests => 1' to 'tests => last_test_to_print';
 
-my $logname=$log->get_log;
-ok($logname eq $logfile,'Log file is loaded');
+use Test::More tests => 1;
+BEGIN { use_ok('Logger::Simple') };
 
-undef $log;
+#########################
 
-if($^O eq 'MSWin32'){
-  system "C:\\Windows\\System32\\cmd.exe \/c del t\\logfile";
-}else{ 
-  unlink $logfile;
-}
+# Insert your test code below, the Test::More module is use()ed here so read
+# its man page ( perldoc Test::More ) for help writing this test script.
 

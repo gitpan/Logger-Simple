@@ -60,3 +60,10 @@ Revision history for Perl extension Logger::Simple
 1.09 Sat Apr  1 17:26:19 2006
   - Edited the lock & unlock functions to be ignored when operating on MS-Win32. Rewrote the tests
     so that they are skipped on Win32 systems.
+
+1.091 Sun Apr  2 09:46:13 2006
+  - Added the README file
+
+2.0   Fri Jun 9 20:09:55 2006
+  - Complete rewrite of module to include the use of the Object::InsideOut module
+

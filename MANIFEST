@@ -2,6 +2,7 @@ META.yml
 Changes
 Simple.pm
 MANIFEST
+README
 Makefile.PL
 t/01load.t
 t/02readwrite.t
